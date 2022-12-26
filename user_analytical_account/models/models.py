@@ -118,6 +118,7 @@ class StockPickingInh(models.Model):
         scraps = self.env['stock.scrap'].search([('picking_id', '=', self.id)])
         moves = (self.move_lines + scraps.move_id).stock_valuation_layer_ids
         for res in moves:
+            res.account_move_id.analytical_account_id = self.analytical_account_id.id
             for move in res.account_move_id.line_ids:
                 move.analytic_account_id = self.analytical_account_id.id
         return rec
